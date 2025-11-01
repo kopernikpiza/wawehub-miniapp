@@ -1,0 +1,39 @@
+:root{
+  --bg:#0b0f1a; --panel:#0e1526; --card:#111827;
+  --text:#eef2ff; --muted:#a9b1c7; --border:#1f2a44;
+  --btn:#2b7cff; --btnText:#fff; --tile:#0f172a; --tileBorder:#1f2a44;
+  --tileHover:#111b34; --gold:#ffd34d; --ok:#19c37d;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:760px;margin:0 auto;padding:20px}
+.header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(145deg,#1d4ed8,#06b6d4)}
+.brand{font-weight:700;font-size:22px}
+.progress{display:flex;gap:6px;margin:6px 0 14px}
+.dot{width:8px;height:8px;border-radius:50%;background:#26314f;opacity:.7}
+.dot.active{background:#3b82f6;opacity:1}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:20px}
+.panel.inner{background:var(--card);margin-top:14px}
+h1{font-size:22px;margin:0 0 10px} h2{font-size:18px;margin:0 0 6px}
+.muted{color:var(--muted);font-size:13.5px}
+.split{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:10px 0}
+.price{font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(210px,1fr));gap:14px;margin:12px 0 16px}
+.tile{background:var(--tile);border:1px solid var(--tileBorder);border-radius:16px;padding:14px;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:.15s}
+.tile:hover{background:var(--tileHover);transform:translateY(-1px)}
+.tile.sel{border-color:#3a63ff;box-shadow:0 0 0 2px rgba(58,99,255,.25)}
+.tile h3{margin:0 0 4px;font-size:16px}
+.tile p{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.priceBloc{font-size:14px;font-weight:600;color:#dbeafe}
+.btn{width:100%;padding:12px 16px;border-radius:12px;border:0;background:var(--btn);color:var(--btnText);font-size:15px;cursor:pointer}
+.btn:active{transform:translateY(1px)}
+.btn-outline{background:transparent;color:var(--btn);border:1px solid var(--btn)}
+.nav{display:flex;gap:12px;margin-top:8px}
+.spacer{flex:1}
+.foot{font-size:12.5px;color:var(--muted);margin-top:8px}
+.hide{display:none}
+code{background:#0a1222;color:#e5e7eb;padding:2px 6px;border-radius:6px}
+.star{color:var(--gold);text-shadow:0 0 8px rgba(255,211,77,.45)}
+.ok{background:var(--ok);color:#001a0e}
+.ul{margin:8px 0 0 18px;padding:0}
