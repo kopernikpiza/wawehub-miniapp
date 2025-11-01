@@ -13,93 +13,40 @@
       <div class="logo"></div>
       <div class="brand">Wawehub+ VIP Access</div>
     </div>
-    <div class="progress"><div class="dot" id="p1"></div><div class="dot" id="p2"></div><div class="dot" id="p3"></div></div>
+    <div class="progress"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
 
-    <!-- PAGE 1: PLAN -->
     <section id="page-plan" class="panel">
       <h1>Choose your plan</h1>
-
-      <div class="split">
-        <div><h2>Weekly Access</h2><div class="muted">Short-term access to AI insights & Atlas trades.</div></div>
-        <div class="price">49 USDT / 7 days</div>
-      </div>
-      <div class="split">
-        <div><h2>Monthly Plan</h2><div class="muted">Full access. Popular.</div></div>
-        <div class="price">189 USDT / 30 days <span class="star">★</span></div>
-      </div>
-      <div class="split">
-        <div><h2>Quarterly Plan</h2><div class="muted">Best value for long-term traders.</div></div>
-        <div class="price">289 USDT / 90 days</div>
-      </div>
-
       <div class="tiles">
         <div class="tile" id="tile-week">
-          <h3>Weekly Access</h3><p>Short-term insights.</p>
+          <h3>Weekly Access</h3>
+          <p>Short-term insights.</p>
           <div class="priceBloc">49 USDT / 7 days</div>
           <button class="btn" onclick="App.selectPlan('weekly',49)">Choose Weekly</button>
         </div>
+
         <div class="tile sel" id="tile-month">
-          <h3>Monthly Access <span class="star">★</span></h3><p>Full access. Popular.</p>
+          <h3>Monthly Access <span class="star">★</span></h3>
+          <p>Full access. Popular.</p>
           <div class="priceBloc">189 USDT / 30 days</div>
           <button class="btn" onclick="App.selectPlan('monthly',189)">Choose Monthly</button>
         </div>
+
         <div class="tile" id="tile-quarter">
-          <h3>Quarterly Plan</h3><p>Best value.</p>
+          <h3>Quarterly Plan</h3>
+          <p>Best value.</p>
           <div class="priceBloc">289 USDT / 90 days</div>
           <button class="btn" onclick="App.selectPlan('quarterly',289)">Choose Quarterly</button>
         </div>
       </div>
 
-      <button class="btn" onclick="App.goPayment()">Continue</button>
+      <div class="sticky-cta">
+        <button class="btn" onclick="App.goPayment()">Continue</button>
+      </div>
+
       <div class="foot">Tip: You can change your plan on the next screen before submitting.</div>
     </section>
-
-    <!-- PAGE 2: PAYMENT -->
-    <section id="page-pay" class="panel hide">
-      <h1>Payment</h1>
-      <div class="muted" id="chosenPlanText">Selected: —</div>
-
-      <div style="margin-top:10px"><b>Method</b><br/>USDT (TRC20)</div>
-      <div style="margin-top:8px">
-        <b>Wallet</b>:
-        <code id="addr">TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code>
-        <button class="btn btn-outline" style="width:auto;margin-left:8px" onclick="App.copyAddr()">Copy</button>
-      </div>
-
-      <div class="muted" style="margin-top:10px">
-        Send the exact amount to the wallet above. After payment, tap “Send TX ID” and paste your transaction hash for manual verification.
-      </div>
-
-      <div class="nav" style="margin-top:14px">
-        <button class="btn" onclick="App.sendTx()">Send TX ID</button>
-        <div class="spacer"></div>
-        <button class="btn" onclick="App.goConfirm()">Continue</button>
-      </div>
-      <div id="payStatus" class="foot"></div>
-    </section>
-
-    <!-- PAGE 3: CONFIRM -->
-    <section id="page-done" class="panel hide">
-      <h1>Confirmation</h1>
-      <div id="summary" class="muted">—</div>
-
-      <div class="panel inner">
-        <div class="muted">What happens next?</div>
-        <ul class="ul">
-          <li>We verify your transaction on-chain.</li>
-          <li>Once confirmed, you’ll be manually added to the VIP group.</li>
-          <li>Need help? Use the Support option in the bot.</li>
-        </ul>
-      </div>
-
-      <div class="nav" style="margin-top:12px">
-        <button class="btn ok" onclick="App.closeApp()">Done</button>
-        <div class="spacer"></div>
-        <button class="btn btn-outline" onclick="App.backToPay()">Edit TX / Plan</button>
-      </div>
-    </section>
   </div>
-
   <script src="./app.js"></script>
 </body>
 </html>
