@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wawehub+ VIP</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background: var(--tg-theme-bg-color, #0b0f1a); color: var(--tg-theme-text-color, #fff); }
+    .wrap { max-width: 520px; margin: 0 auto; padding: 20px; }
+    .card { background: #131a2a; border-radius: 14px; padding: 16px; margin: 12px 0; border: 1px solid #1f2a44; }
+    h1 { font-size: 20px; margin: 8px 0 16px; }
+    .plan { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
+    .plan b { font-size: 16px; }
+    .muted { opacity: .8; font-size: 13px; }
+    button { width: 100%; padding: 12px 16px; border-radius: 10px; border: 0; font-size: 15px; cursor: pointer; }
+    .btn { background: #2b7cff; color: #fff; }
+    .row { display:flex; gap:10px; flex-wrap: wrap; }
+    .row > div { flex:1 1 32%; min-width: 150px; }
+    code { background: #0e1424; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🌊 Wawehub+ VIP Access</h1>
+    <div class="card">
+      <div class="plan"><b>Weekly Access</b><span>49 USDT / 7 days</span></div>
+      <div class="muted">Short-term access to AI insights & Atlas trades.</div>
+      <div class="plan"><b>Monthly Access</b><span>189 USDT / 30 days ⭐</span></div>
+      <div class="muted">Full access. Most Popular.</div>
+      <div class="plan"><b>Quarterly Plan</b><span>289 USDT / 90 days</span></div>
+      <div class="muted">Best value for long-term traders.</div>
+      <div class="row" style="margin-top:12px">
+        <div><button class="btn" onclick="selectPlan('weekly',49)">Choose Weekly</button></div>
+        <div><button class="btn" onclick="selectPlan('monthly',189)">Choose Monthly</button></div>
+        <div><button class="btn" onclick="selectPlan('quarterly',289)">Choose Quarterly</button></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <b>Payment Method</b><br/>
+      USDT (TRC20)<br/>
+      Wallet: <code id="addr">TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code>
+      <p class="muted">After payment, tap “Send TX ID” to submit your hash for manual verification.</p>
+      <button class="btn" onclick="sendTx()">Send TX ID</button>
+    </div>
+
+    <div class="card muted" id="status"></div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    let selection = { plan: null, amount: null, chain: "TRC20", asset: "USDT", address: null, txid: null };
+
+    function selectPlan(plan, amount){
+      selection.plan = plan; selection.amount = amount;
+      selection.address = document.getElementById('addr').textContent.trim();
+      document.getElementById('status').textContent = `Selected: ${plan} — ${amount} USDT`;
+      tg.HapticFeedback?.selectionChanged();
+    }
+
+    function sendTx(){
+      if(!selection.plan){ document.getElementById('status').textContent = "Select a plan first."; return; }
+      const txid = prompt("Paste your TX ID (hash):");
+      if(!txid){ return; }
+      selection.txid = txid.trim();
+      const payload = {
+        type: "WAWEHUB_PAYMENT",
+        ...selection,
+        user: tg.initDataUnsafe?.user || null,
+        ts: Date.now()
+      };
+      tg.sendData(JSON.stringify(payload)); // bota gider
+      document.getElementById('status').textContent = "TX sent to bot. You'll be verified shortly.";
+      tg.HapticFeedback?.notificationOccurred?.("success");
+    }
+  </script>
+</body>
+</html>
