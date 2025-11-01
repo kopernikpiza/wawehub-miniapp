@@ -1,52 +1,200 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Wawehub+ VIP</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="./styles.css"/>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Wawehub+ VIP</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root{
+    --bg:#0b0f1a; --panel:#0e1526; --tile:#101826; --text:#eef2ff; --muted:#a9b1c7;
+    --border:#1f2a44; --btn:#2b7cff; --ok:#19c37d; --gold:#ffd34d; --glow:#3a63ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text)}
+  .wrap{max-width:760px;margin:0 auto;padding:14px}
+  .header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(145deg,#1d4ed8,#06b6d4)}
+  .brand{font-weight:700;font-size:22px}
+  .progress{display:flex;gap:6px;margin:6px 0 14px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#26314f;opacity:.7}
+  .dot.active{background:#3b82f6;opacity:1}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:14px}
+  h1{font-size:20px;margin:0 0 8px}
+  .foot{font-size:12.5px;color:var(--muted);margin-top:10px}
+
+  /* Cards grid */
+  .cards{display:grid;grid-template-columns:1fr;gap:12px;margin-top:8px}
+  @media(min-width:700px){ .cards{grid-template-columns:repeat(3,minmax(210px,1fr));gap:14px} }
+
+  /* Plan card */
+  .card{
+    position:relative; background:var(--tile); border:1px solid var(--border); border-radius:16px;
+    padding:14px; cursor:pointer; transition:.18s ease; overflow:hidden;
+  }
+  .card:hover{transform:translateY(-1px)}
+  .card.selected{
+    border-color:var(--glow);
+    box-shadow:0 0 0 2px rgba(58,99,255,.25), 0 8px 24px rgba(0,0,0,.35);
+  }
+  .card .badge{position:absolute; top:10px; right:10px; font-size:12px; color:var(--gold)}
+  .head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .icon{
+    width:34px;height:34px;border-radius:10px;
+    background:linear-gradient(135deg, rgba(59,130,246,.15), rgba(59,130,246,.35));
+    display:grid;place-items:center;flex:0 0 34px;
+  }
+  .icon svg{width:18px;height:18px;opacity:.9}
+  .title{font-weight:700}
+  .subtitle{font-size:12.5px;color:var(--muted);margin-top:2px}
+
+  .features{display:flex;flex-direction:column;gap:6px;margin:10px 0 12px}
+  .feat{display:flex;align-items:center;gap:8px;font-size:13px;color:#d7def2}
+  .feat svg{width:14px;height:14px;color:var(--ok);flex:0 0 14px}
+
+  .price{
+    margin-top:6px; display:flex; align-items:baseline; gap:8px;
+    font-weight:700; letter-spacing:.2px;
+  }
+  .price small{font-size:12px;color:var(--muted);font-weight:500}
+
+  /* Check mark (radio-like) */
+  .check{
+    position:absolute; top:10px; left:10px; width:18px; height:18px; border-radius:50%;
+    border:2px solid #2e3a5b; display:grid; place-items:center; background:transparent; transition:.15s;
+  }
+  .card.selected .check{border-color:var(--glow); box-shadow:0 0 0 3px rgba(58,99,255,.18)}
+  .dotin{width:10px; height:10px; border-radius:50%; background:transparent}
+  .card.selected .dotin{background:var(--glow)}
+
+  /* CTA */
+  .sticky-cta{position:sticky; bottom:8px; padding-top:8px; background:linear-gradient(to top,rgba(11,15,26,.95),rgba(11,15,26,0))}
+  .btn{width:100%; padding:14px 16px; border-radius:12px; border:0; background:var(--btn); color:#fff; font-size:16px; font-weight:600; letter-spacing:.2px; cursor:pointer}
+  .btn:active{transform:translateY(1px)}
+</style>
 </head>
 <body>
   <div class="wrap">
-    <div class="header">
-      <div class="logo"></div>
-      <div class="brand">Wawehub+ VIP Access</div>
-    </div>
+    <div class="header"><div class="logo"></div><div class="brand">Wawehub+ VIP Access</div></div>
     <div class="progress"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
 
-    <section id="page-plan" class="panel">
+    <section class="panel">
       <h1>Choose your plan</h1>
-      <div class="tiles">
-        <div class="tile" id="tile-week">
-          <h3>Weekly Access</h3>
-          <p>Short-term insights.</p>
-          <div class="priceBloc">49 USDT / 7 days</div>
-          <button class="btn" onclick="App.selectPlan('weekly',49)">Choose Weekly</button>
+
+      <div id="cards" class="cards">
+        <!-- WEEKLY -->
+        <div class="card" data-plan="weekly" data-amount="49">
+          <div class="check"><div class="dotin"></div></div>
+          <div class="head">
+            <div class="icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 11h10v2H7zM7 7h10v2H7zM7 15h6v2H7z"/></svg>
+            </div>
+            <div>
+              <div class="title">Weekly Access</div>
+              <div class="subtitle">Short-term insights & Atlas trades.</div>
+            </div>
+          </div>
+          <div class="features">
+            <div class="feat">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              AI insights (6h cadence)
+            </div>
+            <div class="feat">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              Atlas live trade feed
+            </div>
+          </div>
+          <div class="price">49 USDT <small>/ 7 days</small></div>
         </div>
 
-        <div class="tile sel" id="tile-month">
-          <h3>Monthly Access <span class="star">★</span></h3>
-          <p>Full access. Popular.</p>
-          <div class="priceBloc">189 USDT / 30 days</div>
-          <button class="btn" onclick="App.selectPlan('monthly',189)">Choose Monthly</button>
+        <!-- MONTHLY (default selected) -->
+        <div class="card selected" data-plan="monthly" data-amount="189">
+          <div class="check"><div class="dotin"></div></div>
+          <div class="badge">★ Popular</div>
+          <div class="head">
+            <div class="icon" style="background:linear-gradient(135deg, rgba(250,204,21,.20), rgba(250,204,21,.45))">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            </div>
+            <div>
+              <div class="title">Monthly Access</div>
+              <div class="subtitle">Full access. Most popular.</div>
+            </div>
+          </div>
+          <div class="features">
+            <div class="feat">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              All VIP features unlocked
+            </div>
+            <div class="feat">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              Priority support & quicker onboarding
+            </div>
+          </div>
+          <div class="price">189 USDT <small>/ 30 days</small></div>
         </div>
 
-        <div class="tile" id="tile-quarter">
-          <h3>Quarterly Plan</h3>
-          <p>Best value.</p>
-          <div class="priceBloc">289 USDT / 90 days</div>
-          <button class="btn" onclick="App.selectPlan('quarterly',289)">Choose Quarterly</button>
+        <!-- QUARTERLY -->
+        <div class="card" data-plan="quarterly" data-amount="289">
+          <div class="check"><div class="dotin"></div></div>
+          <div class="head">
+            <div class="icon" style="background:linear-gradient(135deg, rgba(59,130,246,.15), rgba(34,197,94,.35))">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17h18v2H3zm0-7h18v2H3zm0-7h18v2H3z"/></svg>
+            </div>
+            <div>
+              <div class="title">Quarterly Plan</div>
+              <div class="subtitle">Best value for long-term traders.</div>
+            </div>
+          </div>
+          <div class="features">
+            <div class="feat">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              90-day uninterrupted access
+            </div>
+            <div class="feat">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+              Best value / lowest daily cost
+            </div>
+          </div>
+          <div class="price">289 USDT <small>/ 90 days</small></div>
         </div>
       </div>
 
-      <div class="sticky-cta">
-        <button class="btn" onclick="App.goPayment()">Continue</button>
-      </div>
-
-      <div class="foot">Tip: You can change your plan on the next screen before submitting.</div>
+      <div class="sticky-cta"><button id="continueBtn" class="btn">Continue</button></div>
+      <div class="foot">Tip: Tap a card to select. You can change your plan on the next screen too.</div>
     </section>
   </div>
-  <script src="./app.js"></script>
+
+<script>
+  const tg = window.Telegram?.WebApp || null; tg?.expand();
+
+  const cards = Array.from(document.querySelectorAll('.card'));
+  let selected = document.querySelector('.card.selected') || cards[0];
+
+  // Card click = select
+  cards.forEach(c => {
+    c.addEventListener('click', () => {
+      if (selected) selected.classList.remove('selected');
+      c.classList.add('selected');
+      selected = c;
+      tg?.HapticFeedback?.selectionChanged();
+    }, {passive:true});
+  });
+
+  // Continue sends selection to bot (you go to payment page in your flow)
+  document.getElementById('continueBtn').addEventListener('click', () => {
+    const plan   = selected.dataset.plan;
+    const amount = Number(selected.dataset.amount);
+    const payload = {
+      type: "PLAN_SELECTED",
+      plan, amount,
+      user: tg?.initDataUnsafe?.user || null,
+      ts: Date.now()
+    };
+    try { tg?.sendData?.(JSON.stringify(payload)); } catch(e) {}
+    // burada istersen aynı sayfada payment sayfasına yönlendirme yapabilirsin;
+    // şu an örnek olarak mini-app'i kapatıyoruz (bot flow'u devam ettirir).
+    tg?.close?.();
+  });
+</script>
 </body>
 </html>
