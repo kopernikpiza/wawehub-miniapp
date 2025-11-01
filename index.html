@@ -1,81 +1,218 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Wawehub+ VIP</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    body { font-family: system-ui, sans-serif; margin: 0; background: var(--tg-theme-bg-color, #0b0f1a); color: var(--tg-theme-text-color, #fff); }
-    .wrap { max-width: 520px; margin: 0 auto; padding: 20px; }
-    .card { background: #131a2a; border-radius: 14px; padding: 16px; margin: 12px 0; border: 1px solid #1f2a44; }
-    h1 { font-size: 20px; margin: 8px 0 16px; }
-    .plan { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
-    .plan b { font-size: 16px; }
-    .muted { opacity: .8; font-size: 13px; }
-    button { width: 100%; padding: 12px 16px; border-radius: 10px; border: 0; font-size: 15px; cursor: pointer; }
-    .btn { background: #2b7cff; color: #fff; }
-    .row { display:flex; gap:10px; flex-wrap: wrap; }
-    .row > div { flex:1 1 32%; min-width: 150px; }
-    code { background: #0e1424; padding: 2px 6px; border-radius: 6px; }
+    :root{
+      --bg: var(--tg-theme-bg-color, #0b0f1a);
+      --card: #131a2a;
+      --text: var(--tg-theme-text-color, #fff);
+      --muted: #a9b1c7;
+      --border: #1f2a44;
+      --btn: #2b7cff;
+      --btnText:#fff;
+      --ok:#19c37d;
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{max-width:560px;margin:0 auto;padding:20px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin:12px 0}
+    h1{font-size:20px;margin:0 0 12px} h2{font-size:18px;margin:0 0 8px}
+    .plan{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:10px 0}
+    .muted{color:var(--muted);font-size:13px}
+    .row{display:flex;gap:10px;flex-wrap:wrap} .row>div{flex:1 1 32%;min-width:150px}
+    button{width:100%;padding:12px 14px;border-radius:10px;border:0;font-size:15px;cursor:pointer}
+    .btn{background:var(--btn);color:var(--btnText)} .btn-outline{background:transparent;color:var(--btn);border:1px solid var(--btn)}
+    .btn-ok{background:var(--ok);color:#001a0e}
+    code{background:#0e1424;padding:2px 6px;border-radius:6px}
+    .progress{display:flex;gap:6px;margin:8px 0 14px}
+    .dot{width:10px;height:10px;border-radius:50%;background:#2a3557;opacity:.5}
+    .dot.active{background:var(--btn);opacity:1}
+    .nav{display:flex;gap:10px} .spacer{flex:1}
+    .hide{display:none}
+    .foot{font-size:12px;color:var(--muted);margin-top:8px}
+    .selected{border-color:#3a63ff}
+    .copy{font-size:12px;margin-left:8px}
+    .star{filter:drop-shadow(0 0 6px rgba(255,215,0,.35))}
   </style>
 </head>
 <body>
   <div class="wrap">
+    <!-- HEADER -->
     <h1>🌊 Wawehub+ VIP Access</h1>
-    <div class="card">
-      <div class="plan"><b>Weekly Access</b><span>49 USDT / 7 days</span></div>
+    <div class="progress"><div class="dot" id="p1"></div><div class="dot" id="p2"></div><div class="dot" id="p3"></div></div>
+
+    <!-- PAGE 1: PLAN -->
+    <section id="page-plan" class="card">
+      <h2>Choose your plan</h2>
+      <div class="plan"><b>Weekly Access</b> <span>49 USDT / 7 days</span></div>
       <div class="muted">Short-term access to AI insights & Atlas trades.</div>
-      <div class="plan"><b>Monthly Access</b><span>189 USDT / 30 days ⭐</span></div>
+      <div class="plan selected" id="monthlyRow"><b>Monthly Access</b><span>189 USDT / 30 days <span class="star">⭐</span></span></div>
       <div class="muted">Full access. Most Popular.</div>
-      <div class="plan"><b>Quarterly Plan</b><span>289 USDT / 90 days</span></div>
+      <div class="plan"><b>Quarterly Plan</b> <span>289 USDT / 90 days</span></div>
       <div class="muted">Best value for long-term traders.</div>
       <div class="row" style="margin-top:12px">
         <div><button class="btn" onclick="selectPlan('weekly',49)">Choose Weekly</button></div>
         <div><button class="btn" onclick="selectPlan('monthly',189)">Choose Monthly</button></div>
         <div><button class="btn" onclick="selectPlan('quarterly',289)">Choose Quarterly</button></div>
       </div>
-    </div>
+      <div class="foot">Tip: You can change your plan on the next screen before submitting.</div>
+      <div class="nav" style="margin-top:12px">
+        <div class="spacer"></div>
+        <button class="btn" onclick="goPayment()">Continue</button>
+      </div>
+    </section>
 
-    <div class="card">
-      <b>Payment Method</b><br/>
-      USDT (TRC20)<br/>
-      Wallet: <code id="addr">TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code>
-      <p class="muted">After payment, tap “Send TX ID” to submit your hash for manual verification.</p>
-      <button class="btn" onclick="sendTx()">Send TX ID</button>
-    </div>
+    <!-- PAGE 2: PAYMENT -->
+    <section id="page-pay" class="card hide">
+      <h2>Payment</h2>
+      <div class="muted" id="chosenPlanText">Selected: —</div>
+      <div style="margin-top:12px">
+        <b>Method</b><br/>USDT (TRC20)
+      </div>
+      <div style="margin-top:6px">
+        <b>Wallet</b>:
+        <code id="addr">TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code>
+        <button class="btn-outline copy" onclick="copyAddr()">Copy</button>
+      </div>
+      <div class="muted" style="margin-top:8px">
+        Send the exact amount to the wallet above. After payment, tap “Send TX ID” and paste your transaction hash for manual verification.
+      </div>
+      <div class="row" style="margin-top:14px">
+        <div><button class="btn" onclick="sendTx()">Send TX ID</button></div>
+      </div>
+      <div id="payStatus" class="foot"></div>
+      <div class="nav" style="margin-top:12px">
+        <button class="btn-outline" onclick="backToPlan()">Back</button>
+        <div class="spacer"></div>
+        <button class="btn" onclick="goConfirm()">Continue</button>
+      </div>
+    </section>
 
-    <div class="card muted" id="status"></div>
+    <!-- PAGE 3: CONFIRM -->
+    <section id="page-done" class="card hide">
+      <h2>Confirmation</h2>
+      <div id="summary" class="muted">—</div>
+      <div class="card" style="margin-top:12px">
+        <div class="muted">What happens next?</div>
+        <ul style="margin:8px 0 0 16px;padding:0">
+          <li>We verify your transaction on-chain.</li>
+          <li>Once confirmed, you’ll be manually added to the VIP group.</li>
+          <li>If you need help, contact support from the bot menu.</li>
+        </ul>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <div><button class="btn-ok" onclick="closeApp()">Done</button></div>
+        <div><button class="btn-outline" onclick="backToPay()">Edit TX / Plan</button></div>
+      </div>
+      <div class="foot">You’ll receive a message in the bot after verification. 🚀</div>
+    </section>
   </div>
 
   <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    const tg = window.Telegram?.WebApp || null;
+    tg?.expand();
 
-    let selection = { plan: null, amount: null, chain: "TRC20", asset: "USDT", address: null, txid: null };
+    // app state
+    const state = { plan:null, amount:null, chain:"TRC20", asset:"USDT", address:null, txid:null };
 
+    // progress dots
+    const dots = [document.getElementById('p1'), document.getElementById('p2'), document.getElementById('p3')];
+    function setStep(n){ dots.forEach((d,i)=>d.classList.toggle('active', i<n)); }
+
+    // pages
+    const pgPlan = document.getElementById('page-plan');
+    const pgPay  = document.getElementById('page-pay');
+    const pgDone = document.getElementById('page-done');
+
+    function show(el){ [pgPlan,pgPay,pgDone].forEach(e=>e.classList.add('hide')); el.classList.remove('hide'); }
     function selectPlan(plan, amount){
-      selection.plan = plan; selection.amount = amount;
-      selection.address = document.getElementById('addr').textContent.trim();
-      document.getElementById('status').textContent = `Selected: ${plan} — ${amount} USDT`;
-      tg.HapticFeedback?.selectionChanged();
+      state.plan = plan; state.amount = amount;
+      document.getElementById('chosenPlanText').textContent = `Selected: ${plan} — ${amount} USDT`;
+      document.getElementById('payStatus').textContent = "";
+      highlight(plan);
+      tg?.HapticFeedback?.selectionChanged();
+    }
+    function highlight(plan){
+      // simple visual hint: monthly row outlined if monthly selected, etc.
+      document.querySelectorAll('.plan').forEach(x=>x.classList.remove('selected'));
+      const map = {weekly:0, monthly:1, quarterly:2};
+      const idx = map[plan];
+      const els = document.querySelectorAll('#page-plan .plan');
+      if (els[idx]) els[idx].classList.add('selected');
+    }
+
+    function goPayment(){
+      if(!state.plan){ selectPlan('monthly',189); } // default
+      setStep(2);
+      show(pgPay);
+    }
+    function backToPlan(){ setStep(1); show(pgPlan); }
+
+    function copyAddr(){
+      const addr = document.getElementById('addr').textContent.trim();
+      navigator.clipboard.writeText(addr).then(()=>{
+        document.getElementById('payStatus').textContent = "Wallet address copied.";
+      });
+    }
+
+    function simpleTxCheck(tx){
+      // very light check: 16+ hex chars; you doğrularsın botta
+      return typeof tx === 'string' && tx.trim().length >= 16;
     }
 
     function sendTx(){
-      if(!selection.plan){ document.getElementById('status').textContent = "Select a plan first."; return; }
+      state.address = document.getElementById('addr').textContent.trim();
+      if(!state.plan){ document.getElementById('payStatus').textContent = "Select a plan first."; return; }
       const txid = prompt("Paste your TX ID (hash):");
-      if(!txid){ return; }
-      selection.txid = txid.trim();
+      if(!txid) return;
+      if(!simpleTxCheck(txid)) { document.getElementById('payStatus').textContent = "Invalid TX format."; return; }
+      state.txid = txid.trim();
+
+      // send to bot as step payload (optional, you can wait until confirm)
       const payload = {
-        type: "WAWEHUB_PAYMENT",
-        ...selection,
-        user: tg.initDataUnsafe?.user || null,
+        type:"WAWEHUB_PAYMENT_DRAFT",
+        ...state,
+        user: tg?.initDataUnsafe?.user || null,
         ts: Date.now()
       };
-      tg.sendData(JSON.stringify(payload)); // bota gider
-      document.getElementById('status').textContent = "TX sent to bot. You'll be verified shortly.";
-      tg.HapticFeedback?.notificationOccurred?.("success");
+      try{
+        tg?.sendData(JSON.stringify(payload));
+        document.getElementById('payStatus').textContent = "TX sent to bot (draft). You can still edit before confirming.";
+        tg?.HapticFeedback?.impactOccurred?.("light");
+      }catch(_){}
     }
+
+    function goConfirm(){
+      if(!state.txid){ document.getElementById('payStatus').textContent = "Please send your TX ID first."; return; }
+      setStep(3);
+      // final send to bot
+      const payload = {
+        type:"WAWEHUB_PAYMENT_FINAL",
+        ...state,
+        user: tg?.initDataUnsafe?.user || null,
+        ts: Date.now()
+      };
+      try{ tg?.sendData(JSON.stringify(payload)); }catch(_){}
+      // summary
+      const s = document.getElementById('summary');
+      s.innerHTML = `
+        <b>Plan:</b> ${state.plan} — <b>${state.amount} USDT</b><br/>
+        <b>Network:</b> ${state.asset} (${state.chain})<br/>
+        <b>Wallet:</b> <code>${state.address}</code><br/>
+        <b>TX:</b> <code>${state.txid}</code>
+      `;
+      show(pgDone);
+    }
+
+    function backToPay(){ setStep(2); show(pgPay); }
+    function closeApp(){ tg?.close?.(); }
+
+    // init defaults
+    setStep(1);
+    selectPlan('monthly',189);  // default selection
   </script>
 </body>
 </html>
