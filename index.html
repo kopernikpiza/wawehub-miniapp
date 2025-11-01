@@ -1,213 +1,105 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Wawehub+ VIP</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<style>
-  :root{
-    --bg: #0b0f1a; --card:#111827; --panel:#0e1526; --text:#eef2ff; --muted:#a9b1c7;
-    --border:#1f2a44; --btn:#2b7cff; --btnText:#fff; --tile:#0f172a; --tileBorder:#1f2a44;
-    --tileHover:#111b34; --gold:#ffd34d; --ok:#19c37d;
-  }
-  *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text)}
-  .wrap{max-width:760px;margin:0 auto;padding:20px}
-  .header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-  .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(145deg,#1d4ed8,#06b6d4)}
-  .brand{font-weight:700;font-size:22px}
-  .progress{display:flex;gap:6px;margin:6px 0 14px}
-  .dot{width:8px;height:8px;border-radius:50%;background:#26314f;opacity:.7}
-  .dot.active{background:#3b82f6;opacity:1}
-  .panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:20px}
-  h1{font-size:22px;margin:0 0 10px}
-  h2{font-size:18px;margin:0 0 6px}
-  .muted{color:var(--muted);font-size:13.5px}
-  .row{display:flex;gap:14px;flex-wrap:wrap}
-  .split{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:10px 0}
-  .price{font-weight:600}
-  .tiles{display:grid;grid-template-columns:repeat(3,minmax(210px,1fr));gap:14px;margin:12px 0 16px}
-  .tile{background:var(--tile);border:1px solid var(--tileBorder);border-radius:16px;padding:14px;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:.15s}
-  .tile:hover{background:var(--tileHover);transform:translateY(-1px)}
-  .tile.sel{border-color:#3a63ff;box-shadow:0 0 0 2px rgba(58,99,255,.25)}
-  .tile h3{margin:0 0 4px;font-size:16px;display:flex;align-items:center;gap:6px}
-  .tile p{margin:0 0 10px;font-size:13px;color:var(--muted)}
-  .tile .priceBloc{font-size:14px;font-weight:600;color:#dbeafe}
-  .btn{width:100%;padding:12px 16px;border-radius:12px;border:0;background:var(--btn);color:var(--btnText);font-size:15px;cursor:pointer}
-  .btn:active{transform:translateY(1px)}
-  .btn-outline{background:transparent;color:var(--btn);border:1px solid var(--btn)}
-  .nav{display:flex;gap:12px;margin-top:8px}
-  .spacer{flex:1}
-  .foot{font-size:12.5px;color:var(--muted);margin-top:8px}
-  .hide{display:none}
-  code{background:#0a1222;color:#e5e7eb;padding:2px 6px;border-radius:6px}
-  .star{color:var(--gold);text-shadow:0 0 8px rgba(255,211,77,.45)}
-  .ok{background:var(--ok);color:#001a0e}
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Wawehub+ VIP</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="./styles.css"/>
 </head>
 <body>
-<div class="wrap">
-  <div class="header"><div class="logo"></div><div class="brand">Wawehub+ VIP Access</div></div>
-  <div class="progress"><div class="dot" id="p1"></div><div class="dot" id="p2"></div><div class="dot" id="p3"></div></div>
+  <div class="wrap">
+    <div class="header">
+      <div class="logo"></div>
+      <div class="brand">Wawehub+ VIP Access</div>
+    </div>
+    <div class="progress"><div class="dot" id="p1"></div><div class="dot" id="p2"></div><div class="dot" id="p3"></div></div>
 
-  <!-- PAGE 1: PLAN -->
-  <section id="page-plan" class="panel">
-    <h1>Choose your plan</h1>
+    <!-- PAGE 1: PLAN -->
+    <section id="page-plan" class="panel">
+      <h1>Choose your plan</h1>
 
-    <div class="split">
-      <div>
-        <h2>Weekly Access</h2>
-        <div class="muted">Short-term access to AI insights &amp; Atlas trades.</div>
+      <div class="split">
+        <div><h2>Weekly Access</h2><div class="muted">Short-term access to AI insights & Atlas trades.</div></div>
+        <div class="price">49 USDT / 7 days</div>
       </div>
-      <div class="price">49 USDT / 7 days</div>
-    </div>
-
-    <div class="split">
-      <div>
-        <h2>Monthly Plan</h2>
-        <div class="muted">Full access. Popular.</div>
+      <div class="split">
+        <div><h2>Monthly Plan</h2><div class="muted">Full access. Popular.</div></div>
+        <div class="price">189 USDT / 30 days <span class="star">★</span></div>
       </div>
-      <div class="price">189 USDT / 30 days <span class="star">★</span></div>
-    </div>
-
-    <div class="split">
-      <div>
-        <h2>Quarterly Plan</h2>
-        <div class="muted">Best value for long-term traders.</div>
+      <div class="split">
+        <div><h2>Quarterly Plan</h2><div class="muted">Best value for long-term traders.</div></div>
+        <div class="price">289 USDT / 90 days</div>
       </div>
-      <div class="price">229 USDT / 90 days</div>
-    </div>
 
-    <div class="tiles">
-      <div class="tile" id="tile-week">
-        <h3>Weekly Access</h3>
-        <p>Short-term insights.</p>
-        <div class="priceBloc">49 USDT / 7 days</div>
-        <button class="btn" onclick="selectPlan('weekly',49)">Choose Weekly</button>
+      <div class="tiles">
+        <div class="tile" id="tile-week">
+          <h3>Weekly Access</h3><p>Short-term insights.</p>
+          <div class="priceBloc">49 USDT / 7 days</div>
+          <button class="btn" onclick="App.selectPlan('weekly',49)">Choose Weekly</button>
+        </div>
+        <div class="tile sel" id="tile-month">
+          <h3>Monthly Access <span class="star">★</span></h3><p>Full access. Popular.</p>
+          <div class="priceBloc">189 USDT / 30 days</div>
+          <button class="btn" onclick="App.selectPlan('monthly',189)">Choose Monthly</button>
+        </div>
+        <div class="tile" id="tile-quarter">
+          <h3>Quarterly Plan</h3><p>Best value.</p>
+          <div class="priceBloc">289 USDT / 90 days</div>
+          <button class="btn" onclick="App.selectPlan('quarterly',289)">Choose Quarterly</button>
+        </div>
       </div>
-      <div class="tile sel" id="tile-month">
-        <h3>Monthly Access <span class="star">★</span></h3>
-        <p>Full access. Popular.</p>
-        <div class="priceBloc">189 USDT / 30 days</div>
-        <button class="btn" onclick="selectPlan('monthly',189)">Choose Monthly</button>
+
+      <button class="btn" onclick="App.goPayment()">Continue</button>
+      <div class="foot">Tip: You can change your plan on the next screen before submitting.</div>
+    </section>
+
+    <!-- PAGE 2: PAYMENT -->
+    <section id="page-pay" class="panel hide">
+      <h1>Payment</h1>
+      <div class="muted" id="chosenPlanText">Selected: —</div>
+
+      <div style="margin-top:10px"><b>Method</b><br/>USDT (TRC20)</div>
+      <div style="margin-top:8px">
+        <b>Wallet</b>:
+        <code id="addr">TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code>
+        <button class="btn btn-outline" style="width:auto;margin-left:8px" onclick="App.copyAddr()">Copy</button>
       </div>
-      <div class="tile" id="tile-quarter">
-        <h3>Quarterly Plan</h3>
-        <p>Best value.</p>
-        <div class="priceBloc">229 USDT / 90 days</div>
-        <button class="btn" onclick="selectPlan('quarterly',229)">Choose Quarterly</button>
+
+      <div class="muted" style="margin-top:10px">
+        Send the exact amount to the wallet above. After payment, tap “Send TX ID” and paste your transaction hash for manual verification.
       </div>
-    </div>
 
-    <button class="btn" onclick="goPayment()">Continue</button>
-    <div class="foot">Tip: You can change your plan on the next screen before submitting.</div>
-  </section>
+      <div class="nav" style="margin-top:14px">
+        <button class="btn" onclick="App.sendTx()">Send TX ID</button>
+        <div class="spacer"></div>
+        <button class="btn" onclick="App.goConfirm()">Continue</button>
+      </div>
+      <div id="payStatus" class="foot"></div>
+    </section>
 
-  <!-- PAGE 2: PAYMENT -->
-  <section id="page-pay" class="panel hide">
-    <h1>Payment</h1>
-    <div class="muted" id="chosenPlanText">Selected: —</div>
+    <!-- PAGE 3: CONFIRM -->
+    <section id="page-done" class="panel hide">
+      <h1>Confirmation</h1>
+      <div id="summary" class="muted">—</div>
 
-    <div style="margin-top:10px"><b>Method</b><br/>USDT (TRC20)</div>
-    <div style="margin-top:8px">
-      <b>Wallet</b>: <code id="addr">TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code>
-      <button class="btn btn-outline" style="width:auto;margin-left:8px" onclick="copyAddr()">Copy</button>
-    </div>
+      <div class="panel inner">
+        <div class="muted">What happens next?</div>
+        <ul class="ul">
+          <li>We verify your transaction on-chain.</li>
+          <li>Once confirmed, you’ll be manually added to the VIP group.</li>
+          <li>Need help? Use the Support option in the bot.</li>
+        </ul>
+      </div>
 
-    <div class="muted" style="margin-top:10px">
-      Send the exact amount to the wallet above. After payment, tap “Send TX ID” and paste your transaction hash for manual verification.
-    </div>
+      <div class="nav" style="margin-top:12px">
+        <button class="btn ok" onclick="App.closeApp()">Done</button>
+        <div class="spacer"></div>
+        <button class="btn btn-outline" onclick="App.backToPay()">Edit TX / Plan</button>
+      </div>
+    </section>
+  </div>
 
-    <div class="nav" style="margin-top:14px">
-      <button class="btn" onclick="sendTx()">Send TX ID</button>
-      <div class="spacer"></div>
-      <button class="btn" onclick="goConfirm()">Continue</button>
-    </div>
-    <div id="payStatus" class="foot"></div>
-  </section>
-
-  <!-- PAGE 3: CONFIRM -->
-  <section id="page-done" class="panel hide">
-    <h1>Confirmation</h1>
-    <div id="summary" class="muted">—</div>
-
-    <div class="panel" style="background:var(--card);margin-top:14px">
-      <div class="muted">What happens next?</div>
-      <ul style="margin:8px 0 0 18px;padding:0">
-        <li>We verify your transaction on-chain.</li>
-        <li>Once confirmed, you’ll be manually added to the VIP group.</li>
-        <li>Need help? Use the Support option in the bot.</li>
-      </ul>
-    </div>
-
-    <div class="nav" style="margin-top:12px">
-      <button class="btn ok" onclick="closeApp()">Done</button>
-      <div class="spacer"></div>
-      <button class="btn btn-outline" onclick="backToPay()">Edit TX / Plan</button>
-    </div>
-  </section>
-</div>
-
-<script>
-  const tg = window.Telegram?.WebApp || null; tg?.expand();
-
-  const state = { plan:'monthly', amount:189, chain:'TRC20', asset:'USDT', address:null, txid:null };
-
-  const p1=document.getElementById('p1'), p2=document.getElementById('p2'), p3=document.getElementById('p3');
-  function setStep(n){ [p1,p2,p3].forEach((d,i)=>d.classList.toggle('active', i<n)); }
-
-  const pgPlan=document.getElementById('page-plan'), pgPay=document.getElementById('page-pay'), pgDone=document.getElementById('page-done');
-  function show(el){ [pgPlan,pgPay,pgDone].forEach(e=>e.classList.add('hide')); el.classList.remove('hide'); }
-
-  function selectPlan(plan,amount){
-    state.plan=plan; state.amount=amount;
-    ['tile-week','tile-month','tile-quarter'].forEach(id=>document.getElementById(id).classList.remove('sel'));
-    if(plan==='weekly') document.getElementById('tile-week').classList.add('sel');
-    if(plan==='monthly') document.getElementById('tile-month').classList.add('sel');
-    if(plan==='quarterly') document.getElementById('tile-quarter').classList.add('sel');
-    document.getElementById('chosenPlanText').textContent = `Selected: ${plan} — ${amount} USDT`;
-    document.getElementById('payStatus').textContent="";
-    tg?.HapticFeedback?.selectionChanged();
-  }
-
-  function goPayment(){ if(!state.plan) selectPlan('monthly',189); setStep(2); show(pgPay); }
-  function backToPlan(){ setStep(1); show(pgPlan); }
-
-  function copyAddr(){
-    const addr=document.getElementById('addr').textContent.trim();
-    navigator.clipboard.writeText(addr).then(()=>document.getElementById('payStatus').textContent="Wallet address copied.");
-  }
-
-  function txLooksOk(tx){ return typeof tx==='string' && tx.trim().length>=16; }
-
-  function sendTx(){
-    state.address=document.getElementById('addr').textContent.trim();
-    const tx=prompt("Paste your TX ID (hash):"); if(!tx) return;
-    if(!txLooksOk(tx)) { document.getElementById('payStatus').textContent="Invalid TX format."; return; }
-    state.txid=tx.trim();
-    const payload={type:"WAWEHUB_PAYMENT_DRAFT",...state,user:tg?.initDataUnsafe?.user||null,ts:Date.now()};
-    try{ tg?.sendData(JSON.stringify(payload)); }catch(_){}
-    document.getElementById('payStatus').textContent="TX sent to bot (draft). You can still edit before confirming.";
-  }
-
-  function goConfirm(){
-    if(!state.txid){ document.getElementById('payStatus').textContent="Please send your TX ID first."; return; }
-    setStep(3);
-    const payload={type:"WAWEHUB_PAYMENT_FINAL",...state,user:tg?.initDataUnsafe?.user||null,ts:Date.now()};
-    try{ tg?.sendData(JSON.stringify(payload)); }catch(_){}
-    document.getElementById('summary').innerHTML =
-      `<b>Plan:</b> ${state.plan} — <b>${state.amount} USDT</b><br/>
-       <b>Network:</b> ${state.asset} (${state.chain})<br/>
-       <b>Wallet:</b> <code>${state.address||document.getElementById('addr').textContent.trim()}</code><br/>
-       <b>TX:</b> <code>${state.txid}</code>`;
-    show(pgDone);
-  }
-
-  function backToPay(){ setStep(2); show(pgPay); }
-  function closeApp(){ tg?.close?.(); }
-
-  // defaults
-  setStep(1); selectPlan('monthly',189);
-</script>
+  <script src="./app.js"></script>
 </body>
 </html>
