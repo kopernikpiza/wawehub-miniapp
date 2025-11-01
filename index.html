@@ -13,21 +13,25 @@
   *{box-sizing:border-box}
   body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text)}
   .wrap{max-width:760px;margin:0 auto;padding:14px}
+
   .header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
   .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(145deg,#1d4ed8,#06b6d4)}
   .brand{font-weight:700;font-size:22px}
+
   .progress{display:flex;gap:6px;margin:6px 0 14px}
   .dot{width:8px;height:8px;border-radius:50%;background:#26314f;opacity:.7}
   .dot.active{background:#3b82f6;opacity:1}
+
   .panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:14px}
   h1{font-size:20px;margin:0 0 8px}
   .foot{font-size:12.5px;color:var(--muted);margin-top:10px}
+  .hide{display:none}
 
   /* Cards grid */
   .cards{display:grid;grid-template-columns:1fr;gap:12px;margin-top:8px}
   @media(min-width:700px){ .cards{grid-template-columns:repeat(3,minmax(210px,1fr));gap:14px} }
 
-  /* Plan card */
+  /* Plan/Payment card */
   .card{
     position:relative; background:var(--tile); border:1px solid var(--border); border-radius:16px;
     padding:14px; cursor:pointer; transition:.18s ease; overflow:hidden;
@@ -37,7 +41,7 @@
     border-color:var(--glow);
     box-shadow:0 0 0 2px rgba(58,99,255,.25), 0 8px 24px rgba(0,0,0,.35);
   }
-  .card .badge{position:absolute; top:10px; right:10px; font-size:12px; color:var(--gold)}
+  .badge{position:absolute; top:10px; right:10px; font-size:12px; color:var(--gold)}
   .head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
   .icon{
     width:34px;height:34px;border-radius:10px;
@@ -52,39 +56,43 @@
   .feat{display:flex;align-items:center;gap:8px;font-size:13px;color:#d7def2}
   .feat svg{width:14px;height:14px;color:var(--ok);flex:0 0 14px}
 
-  .price{
-    margin-top:6px; display:flex; align-items:baseline; gap:8px;
-    font-weight:700; letter-spacing:.2px;
-  }
+  .price{margin-top:6px; display:flex; align-items:baseline; gap:8px; font-weight:700; letter-spacing:.2px;}
   .price small{font-size:12px;color:var(--muted);font-weight:500}
 
-  /* Check mark (radio-like) */
+  /* Check mark — SAĞ ALTA TAŞINDI */
   .check{
-    position:absolute; top:10px; left:10px; width:18px; height:18px; border-radius:50%;
+    position:absolute; right:10px; bottom:10px; width:20px; height:20px; border-radius:50%;
     border:2px solid #2e3a5b; display:grid; place-items:center; background:transparent; transition:.15s;
   }
   .card.selected .check{border-color:var(--glow); box-shadow:0 0 0 3px rgba(58,99,255,.18)}
-  .dotin{width:10px; height:10px; border-radius:50%; background:transparent}
+  .dotin{width:12px; height:12px; border-radius:50%; background:transparent}
   .card.selected .dotin{background:var(--glow)}
 
   /* CTA */
   .sticky-cta{position:sticky; bottom:8px; padding-top:8px; background:linear-gradient(to top,rgba(11,15,26,.95),rgba(11,15,26,0))}
   .btn{width:100%; padding:14px 16px; border-radius:12px; border:0; background:var(--btn); color:#fff; font-size:16px; font-weight:600; letter-spacing:.2px; cursor:pointer}
   .btn:active{transform:translateY(1px)}
+
+  /* Small helper blocks */
+  .summary{background:#0f1628;border:1px solid var(--border);border-radius:14px;padding:12px;font-size:14px;color:#dbeafe;margin:8px 0 12px}
+  .row-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .btn-outline{background:transparent;color:var(--btn);border:1px solid var(--btn);padding:12px 14px;border-radius:10px}
+  code{background:#0a1222;color:#e5e7eb;padding:2px 6px;border-radius:6px}
 </style>
 </head>
 <body>
   <div class="wrap">
     <div class="header"><div class="logo"></div><div class="brand">Wawehub+ VIP Access</div></div>
-    <div class="progress"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+    <div class="progress"><div id="step1" class="dot active"></div><div id="step2" class="dot"></div><div class="dot"></div></div>
 
-    <section class="panel">
+    <!-- PAGE 1: PLAN -->
+    <section id="page-plan" class="panel">
       <h1>Choose your plan</h1>
 
       <div id="cards" class="cards">
         <!-- WEEKLY -->
         <div class="card" data-plan="weekly" data-amount="49">
-          <div class="check"><div class="dotin"></div></div>
+          <div class="badge"></div>
           <div class="head">
             <div class="icon">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 11h10v2H7zM7 7h10v2H7zM7 15h6v2H7z"/></svg>
@@ -95,21 +103,15 @@
             </div>
           </div>
           <div class="features">
-            <div class="feat">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-              AI insights (6h cadence)
-            </div>
-            <div class="feat">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-              Atlas live trade feed
-            </div>
+            <div class="feat"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> AI insights (6h cadence)</div>
+            <div class="feat"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Atlas live trade feed</div>
           </div>
           <div class="price">49 USDT <small>/ 7 days</small></div>
+          <div class="check"><div class="dotin"></div></div>
         </div>
 
         <!-- MONTHLY (default selected) -->
         <div class="card selected" data-plan="monthly" data-amount="189">
-          <div class="check"><div class="dotin"></div></div>
           <div class="badge">★ Popular</div>
           <div class="head">
             <div class="icon" style="background:linear-gradient(135deg, rgba(250,204,21,.20), rgba(250,204,21,.45))">
@@ -121,21 +123,16 @@
             </div>
           </div>
           <div class="features">
-            <div class="feat">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-              All VIP features unlocked
-            </div>
-            <div class="feat">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-              Priority support & quicker onboarding
-            </div>
+            <div class="feat"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> All VIP features unlocked</div>
+            <div class="feat"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Priority support & onboarding</div>
           </div>
           <div class="price">189 USDT <small>/ 30 days</small></div>
+          <div class="check"><div class="dotin"></div></div>
         </div>
 
         <!-- QUARTERLY -->
         <div class="card" data-plan="quarterly" data-amount="289">
-          <div class="check"><div class="dotin"></div></div>
+          <div class="badge"></div>
           <div class="head">
             <div class="icon" style="background:linear-gradient(135deg, rgba(59,130,246,.15), rgba(34,197,94,.35))">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17h18v2H3zm0-7h18v2H3zm0-7h18v2H3z"/></svg>
@@ -146,31 +143,78 @@
             </div>
           </div>
           <div class="features">
-            <div class="feat">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-              90-day uninterrupted access
-            </div>
-            <div class="feat">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-              Best value / lowest daily cost
-            </div>
+            <div class="feat"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> 90-day uninterrupted access</div>
+            <div class="feat"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Lowest daily cost</div>
           </div>
           <div class="price">289 USDT <small>/ 90 days</small></div>
+          <div class="check"><div class="dotin"></div></div>
         </div>
       </div>
 
       <div class="sticky-cta"><button id="continueBtn" class="btn">Continue</button></div>
       <div class="foot">Tip: Tap a card to select. You can change your plan on the next screen too.</div>
     </section>
+
+    <!-- PAGE 2: PAYMENT (aynı stil) -->
+    <section id="page-pay" class="panel hide">
+      <h1>Payment</h1>
+
+      <!-- Seçilen plan özeti -->
+      <div id="summary" class="summary">—</div>
+
+      <!-- Ödeme yöntemi kartı -->
+      <div id="payCard" class="card selected" data-method="usdt_trc20">
+        <div class="head">
+          <div class="icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10V6l9-4z"/></svg>
+          </div>
+          <div>
+            <div class="title">USDT (TRC20)</div>
+            <div class="subtitle">Fast & low fee. Recommended.</div>
+          </div>
+        </div>
+
+        <div class="features">
+          <div class="feat"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Network: TRON</div>
+          <div class="feat"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Confirmations: ~1–2 min</div>
+        </div>
+
+        <div class="price" id="dueText">Amount due: <span id="amt">—</span> <small>USDT</small></div>
+
+        <div style="margin-top:10px;font-size:14px">
+          <b>Wallet</b>:
+          <code id="addr">TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code>
+        </div>
+
+        <div class="row-actions" style="margin-top:10px">
+          <button class="btn-outline" onclick="copyAddr()">Copy Address</button>
+          <button class="btn-outline" onclick="sendTx()">Send TX ID</button>
+        </div>
+
+        <div id="payStatus" class="foot" style="margin-top:8px"></div>
+        <div class="check"><div class="dotin"></div></div>
+      </div>
+
+      <div class="sticky-cta"><button id="confirmBtn" class="btn">Confirm & Send</button></div>
+      <div class="foot">We’ll verify your TX on-chain and add you to VIP.</div>
+    </section>
   </div>
 
 <script>
   const tg = window.Telegram?.WebApp || null; tg?.expand();
 
-  const cards = Array.from(document.querySelectorAll('.card'));
-  let selected = document.querySelector('.card.selected') || cards[0];
+  // Elements
+  const pagePlan = document.getElementById('page-plan');
+  const pagePay  = document.getElementById('page-pay');
+  const dots = [document.getElementById('step1'), document.getElementById('step2')];
 
-  // Card click = select
+  function setStep(n){ dots.forEach((d,i)=>d.classList.toggle('active', i<n)); }
+  function show(el){ [pagePlan,pagePay].forEach(e=>e.classList.add('hide')); el.classList.remove('hide'); }
+
+  // PLAN selection
+  const cards = Array.from(document.querySelectorAll('#cards .card'));
+  let selected = document.querySelector('#cards .card.selected') || cards[0];
+
   cards.forEach(c => {
     c.addEventListener('click', () => {
       if (selected) selected.classList.remove('selected');
@@ -180,21 +224,72 @@
     }, {passive:true});
   });
 
-  // Continue sends selection to bot (you go to payment page in your flow)
+  // Continue → go Payment
   document.getElementById('continueBtn').addEventListener('click', () => {
     const plan   = selected.dataset.plan;
     const amount = Number(selected.dataset.amount);
+
+    // summary + amount
+    document.getElementById('summary').innerHTML =
+      `<b>Selected:</b> ${plan} • <b>${amount} USDT</b>`;
+    document.getElementById('amt').textContent = amount.toString();
+
+    // optional: notify bot that plan locked for payment
+    try {
+      tg?.sendData?.(JSON.stringify({ type:"PLAN_SELECTED", plan, amount, ts:Date.now() }));
+    } catch(e) {}
+
+    setStep(2);
+    show(pagePay);
+  });
+
+  // Payment helpers
+  function copyAddr(){
+    const addr=document.getElementById('addr').textContent.trim();
+    navigator.clipboard.writeText(addr).then(()=>{
+      document.getElementById('payStatus').textContent="Wallet address copied.";
+    });
+  }
+  function txLooksOk(tx){ return typeof tx==='string' && tx.trim().length>=16; }
+
+  let stateTx = null;
+  function sendTx(){
+    const tx = prompt("Paste your TX ID (hash):");
+    if(!tx) return;
+    if(!txLooksOk(tx)) { document.getElementById('payStatus').textContent="Invalid TX format."; return; }
+    stateTx = tx.trim();
+    document.getElementById('payStatus').textContent = "TX saved (draft). You can confirm below.";
+    // push draft to bot
+    try {
+      tg?.sendData?.(JSON.stringify({ type:"WAWEHUB_PAYMENT_DRAFT", txid:stateTx, ts:Date.now() }));
+    } catch(e) {}
+    tg?.HapticFeedback?.impactOccurred?.("light");
+  }
+
+  // Confirm & Send
+  document.getElementById('confirmBtn').addEventListener('click', () => {
+    if(!stateTx){
+      document.getElementById('payStatus').textContent="Please send your TX ID first.";
+      return;
+    }
+    const plan   = selected.dataset.plan;
+    const amount = Number(selected.dataset.amount);
     const payload = {
-      type: "PLAN_SELECTED",
+      type: "WAWEHUB_PAYMENT_FINAL",
       plan, amount,
+      method: "USDT_TRC20",
+      address: document.getElementById('addr').textContent.trim(),
+      txid: stateTx,
       user: tg?.initDataUnsafe?.user || null,
       ts: Date.now()
     };
     try { tg?.sendData?.(JSON.stringify(payload)); } catch(e) {}
-    // burada istersen aynı sayfada payment sayfasına yönlendirme yapabilirsin;
-    // şu an örnek olarak mini-app'i kapatıyoruz (bot flow'u devam ettirir).
-    tg?.close?.();
+    tg?.close?.(); // bot tarafı flow devam ettirir (onay mesajı/davet)
   });
+
+  // expose copy/send for inline buttons
+  window.copyAddr = copyAddr;
+  window.sendTx = sendTx;
 </script>
 </body>
 </html>
