@@ -95,6 +95,29 @@
   .support-fab svg{width:26px;height:26px;color:#fff}
   .support-label{font-size:11px;color:#d1ddff;opacity:.9;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 </style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tg = window.Telegram?.WebApp || null;
+
+    // Telegram dışından açılırsa uyar
+    if (!tg) {
+      alert("Please open this page from the Wawehub bot button inside Telegram.");
+      return;
+    }
+
+    tg.expand?.();
+
+    // Aynı oturumda bir kez APP_OPEN gönder
+    if (!sessionStorage.getItem('app_open_sent')) {
+      try {
+        tg.sendData?.(JSON.stringify({ type: "APP_OPEN", ts: Date.now() }));
+        sessionStorage.setItem('app_open_sent', '1');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  });
+</script>  
 </head>
 <body>
   <div class="wrap">
@@ -354,3 +377,4 @@
 </script>
 </body>
 </html>
+
