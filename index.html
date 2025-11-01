@@ -31,7 +31,7 @@
   .cards{display:grid;grid-template-columns:1fr;gap:12px;margin-top:8px}
   @media(min-width:700px){ .cards{grid-template-columns:repeat(3,minmax(210px,1fr));gap:14px} }
 
-  /* Plan/Payment card */
+  /* Plan/Payment cards */
   .card{
     position:relative; background:var(--tile); border:1px solid var(--border); border-radius:16px;
     padding:14px; cursor:pointer; transition:.18s ease; overflow:hidden;
@@ -59,7 +59,7 @@
   .price{margin-top:6px; display:flex; align-items:baseline; gap:8px; font-weight:700; letter-spacing:.2px;}
   .price small{font-size:12px;color:var(--muted);font-weight:500}
 
-  /* Check mark — SAĞ ALTA TAŞINDI */
+  /* Check mark — right-bottom */
   .check{
     position:absolute; right:10px; bottom:10px; width:20px; height:20px; border-radius:50%;
     border:2px solid #2e3a5b; display:grid; place-items:center; background:transparent; transition:.15s;
@@ -72,18 +72,34 @@
   .sticky-cta{position:sticky; bottom:8px; padding-top:8px; background:linear-gradient(to top,rgba(11,15,26,.95),rgba(11,15,26,0))}
   .btn{width:100%; padding:14px 16px; border-radius:12px; border:0; background:var(--btn); color:#fff; font-size:16px; font-weight:600; letter-spacing:.2px; cursor:pointer}
   .btn:active{transform:translateY(1px)}
+  .btn-outline{background:transparent;color:var(--btn);border:1px solid var(--btn);padding:12px 14px;border-radius:10px}
 
-  /* Small helper blocks */
+  /* Helpers */
   .summary{background:#0f1628;border:1px solid var(--border);border-radius:14px;padding:12px;font-size:14px;color:#dbeafe;margin:8px 0 12px}
   .row-actions{display:flex;gap:10px;flex-wrap:wrap}
-  .btn-outline{background:transparent;color:var(--btn);border:1px solid var(--btn);padding:12px 14px;border-radius:10px}
   code{background:#0a1222;color:#e5e7eb;padding:2px 6px;border-radius:6px}
+
+  /* Floating Support (outside-like) */
+  .support-wrap{
+    position:fixed; right:14px; bottom:16px; z-index:9999;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    pointer-events:auto;
+  }
+  .support-fab{
+    width:54px;height:54px;border-radius:50%;
+    background:linear-gradient(145deg,#2b7cff,#5aa0ff);
+    display:grid;place-items:center;
+    box-shadow:0 8px 24px rgba(0,0,0,.35);
+    cursor:pointer; border:2px solid rgba(255,255,255,.12);
+  }
+  .support-fab svg{width:26px;height:26px;color:#fff}
+  .support-label{font-size:11px;color:#d1ddff;opacity:.9;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 </style>
 </head>
 <body>
   <div class="wrap">
     <div class="header"><div class="logo"></div><div class="brand">Wawehub+ VIP Access</div></div>
-    <div class="progress"><div id="step1" class="dot active"></div><div id="step2" class="dot"></div><div class="dot"></div></div>
+    <div class="progress"><div id="step1" class="dot active"></div><div id="step2" class="dot"></div><div id="step3" class="dot"></div></div>
 
     <!-- PAGE 1: PLAN -->
     <section id="page-plan" class="panel">
@@ -155,15 +171,12 @@
       <div class="foot">Tip: Tap a card to select. You can change your plan on the next screen too.</div>
     </section>
 
-    <!-- PAGE 2: PAYMENT (aynı stil) -->
+    <!-- PAGE 2: PAYMENT -->
     <section id="page-pay" class="panel hide">
       <h1>Payment</h1>
-
-      <!-- Seçilen plan özeti -->
       <div id="summary" class="summary">—</div>
 
-      <!-- Ödeme yöntemi kartı -->
-      <div id="payCard" class="card selected" data-method="usdt_trc20">
+      <div id="payCard" class="card selected" data-method="usdt_trc20" style="cursor:default">
         <div class="head">
           <div class="icon">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10V6l9-4z"/></svg>
@@ -182,8 +195,7 @@
         <div class="price" id="dueText">Amount due: <span id="amt">—</span> <small>USDT</small></div>
 
         <div style="margin-top:10px;font-size:14px">
-          <b>Wallet</b>:
-          <code id="addr">TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code>
+          <b>Wallet</b>: <code id="addr">TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code>
         </div>
 
         <div class="row-actions" style="margin-top:10px">
@@ -198,22 +210,62 @@
       <div class="sticky-cta"><button id="confirmBtn" class="btn">Confirm & Send</button></div>
       <div class="foot">We’ll verify your TX on-chain and add you to VIP.</div>
     </section>
+
+    <!-- PAGE 3: CONFIRM -->
+    <section id="page-done" class="panel hide">
+      <h1>Confirmation</h1>
+
+      <div class="summary" id="finalSummary">—</div>
+
+      <div class="card" style="cursor:default">
+        <div class="head">
+          <div class="icon" style="background:linear-gradient(135deg, rgba(34,197,94,.25), rgba(34,197,94,.45))">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12 3.4 13.4 9 19 21 7l-1.4-1.4z"/></svg>
+          </div>
+          <div>
+            <div class="title">Payment submitted</div>
+            <div class="subtitle">We’ll review your transaction and grant access shortly.</div>
+          </div>
+        </div>
+
+        <div class="features">
+          <div class="feat"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> You’ll receive a message once verified.</div>
+          <div class="feat"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Need help? Tap Support.</div>
+        </div>
+      </div>
+
+      <div class="sticky-cta">
+        <button id="doneBtn" class="btn">Done</button>
+      </div>
+      <div class="foot">If anything looks wrong, contact support with your TX ID.</div>
+    </section>
+  </div>
+
+  <!-- Floating Support (global) -->
+  <div class="support-wrap">
+    <div class="support-fab" id="supportBtn" title="Support">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2a7 7 0 0 0-7 7v3a4 4 0 0 0 4 4h1v3a1 1 0 0 0 1.64.77L15.5 16H17a4 4 0 0 0 4-4V9a7 7 0 0 0-7-7z"/>
+      </svg>
+    </div>
+    <div class="support-label">Support</div>
   </div>
 
 <script>
   const tg = window.Telegram?.WebApp || null; tg?.expand();
 
-  // Elements
+  // Page refs
   const pagePlan = document.getElementById('page-plan');
   const pagePay  = document.getElementById('page-pay');
-  const dots = [document.getElementById('step1'), document.getElementById('step2')];
-
+  const pageDone = document.getElementById('page-done');
+  const dots = [document.getElementById('step1'), document.getElementById('step2'), document.getElementById('step3')];
   function setStep(n){ dots.forEach((d,i)=>d.classList.toggle('active', i<n)); }
-  function show(el){ [pagePlan,pagePay].forEach(e=>e.classList.add('hide')); el.classList.remove('hide'); }
+  function show(el){ [pagePlan,pagePay,pageDone].forEach(e=>e.classList.add('hide')); el.classList.remove('hide'); }
 
   // PLAN selection
   const cards = Array.from(document.querySelectorAll('#cards .card'));
   let selected = document.querySelector('#cards .card.selected') || cards[0];
+  let stateTx = null;
 
   cards.forEach(c => {
     c.addEventListener('click', () => {
@@ -224,23 +276,18 @@
     }, {passive:true});
   });
 
-  // Continue → go Payment
+  // Continue → Payment
   document.getElementById('continueBtn').addEventListener('click', () => {
     const plan   = selected.dataset.plan;
     const amount = Number(selected.dataset.amount);
 
-    // summary + amount
     document.getElementById('summary').innerHTML =
       `<b>Selected:</b> ${plan} • <b>${amount} USDT</b>`;
     document.getElementById('amt').textContent = amount.toString();
 
-    // optional: notify bot that plan locked for payment
-    try {
-      tg?.sendData?.(JSON.stringify({ type:"PLAN_SELECTED", plan, amount, ts:Date.now() }));
-    } catch(e) {}
+    try { tg?.sendData?.(JSON.stringify({ type:"PLAN_SELECTED", plan, amount, ts:Date.now() })); } catch(e) {}
 
-    setStep(2);
-    show(pagePay);
+    setStep(2); show(pagePay);
   });
 
   // Payment helpers
@@ -252,21 +299,17 @@
   }
   function txLooksOk(tx){ return typeof tx==='string' && tx.trim().length>=16; }
 
-  let stateTx = null;
   function sendTx(){
     const tx = prompt("Paste your TX ID (hash):");
     if(!tx) return;
     if(!txLooksOk(tx)) { document.getElementById('payStatus').textContent="Invalid TX format."; return; }
     stateTx = tx.trim();
     document.getElementById('payStatus').textContent = "TX saved (draft). You can confirm below.";
-    // push draft to bot
-    try {
-      tg?.sendData?.(JSON.stringify({ type:"WAWEHUB_PAYMENT_DRAFT", txid:stateTx, ts:Date.now() }));
-    } catch(e) {}
+    try { tg?.sendData?.(JSON.stringify({ type:"WAWEHUB_PAYMENT_DRAFT", txid:stateTx, ts:Date.now() })); } catch(e) {}
     tg?.HapticFeedback?.impactOccurred?.("light");
   }
 
-  // Confirm & Send
+  // Confirm & Send → go Confirmation
   document.getElementById('confirmBtn').addEventListener('click', () => {
     if(!stateTx){
       document.getElementById('payStatus').textContent="Please send your TX ID first.";
@@ -284,12 +327,30 @@
       ts: Date.now()
     };
     try { tg?.sendData?.(JSON.stringify(payload)); } catch(e) {}
-    tg?.close?.(); // bot tarafı flow devam ettirir (onay mesajı/davet)
+
+    // Fill final summary
+    document.getElementById('finalSummary').innerHTML =
+      `<b>Plan:</b> ${plan} — <b>${amount} USDT</b><br/>
+       <b>Network:</b> USDT (TRC20)<br/>
+       <b>Wallet:</b> <code>${payload.address}</code><br/>
+       <b>TX:</b> <code>${stateTx}</code>`;
+
+    setStep(3); show(pageDone);
   });
 
-  // expose copy/send for inline buttons
+  // Done → close app
+  document.getElementById('doneBtn').addEventListener('click', () => tg?.close?.());
+
+  // Expose for inline buttons
   window.copyAddr = copyAddr;
-  window.sendTx = sendTx;
+  window.sendTx   = sendTx;
+
+  // Floating support
+  document.getElementById('supportBtn').addEventListener('click', () => {
+    const url = 'https://t.me/wawehubsupport';
+    if (tg?.openTelegramLink) tg.openTelegramLink(url);
+    else window.open(url, '_blank');
+  });
 </script>
 </body>
 </html>
