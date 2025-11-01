@@ -37,3 +37,31 @@ code{background:#0a1222;color:#e5e7eb;padding:2px 6px;border-radius:6px}
 .star{color:var(--gold);text-shadow:0 0 8px rgba(255,211,77,.45)}
 .ok{background:var(--ok);color:#001a0e}
 .ul{margin:8px 0 0 18px;padding:0}
+/* Responsive for mobile */
+@media (max-width: 768px) {
+  .wrap {
+    padding: 14px;
+  }
+  .tiles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .panel {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 520px) {
+  .tiles {
+    grid-template-columns: 1fr;
+  }
+  h1 {
+    font-size: 20px;
+  }
+  h2 {
+    font-size: 16px;
+  }
+  .tile {
+    padding: 12px;
+  }
+}
+
